@@ -1,2 +1,6 @@
 ---
 # handlers file for dovecot
+
+- name: apt update
+  ansible.builtin.apt:
+    update_cache: true

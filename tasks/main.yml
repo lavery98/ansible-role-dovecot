@@ -1,6 +1,24 @@
 ---
 # tasks file for dovecot
 
-- name: Task is running from within the role
-  ansible.builtin.debug:
-    msg: "This is a task from dovecot"
+- name: Ensure dependencies are installed.
+  ansible.builtin.apt:
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - python3-debian
+    state: present
+
+- name: Add Dovecot repository
+  ansible.builtin.deb822_repository:
+    name: dovecot
+    types: deb
+    uris: "{{ dovecot_repo_url }}/{{ dovecot_apt_release }}/{{ ansible_distribution | lower }}/{{ ansible_distribution_release | lower }}"
+    suites: "{{ ansible_distribution_release }}"
+    signed_by: "{{ dovecot_apt_gpg_key }}"
+    components: "{{ dovecot_apt_release_channel }}"
+    state: present
+  notify: apt update
+
+- name: Flush handlers
+  ansible.builtin.meta: flush_handlers

@@ -1,2 +1,8 @@
 ---
 # defaults file for dovecot
+
+dovecot_repo_url: https://repo.dovecot.org
+
+dovecot_apt_release_channel: main
+dovecot_apt_release: "ce-2.4-latest"
+dovecot_apt_gpg_key: "{{ dovecot_repo_url }}/DOVECOT-REPO-GPG-2.4"
