@@ -1,0 +1,6 @@
+---
+# tasks file for dovecot
+
+- name: Task is running from within the role
+  ansible.builtin.debug:
+    msg: "This is a task from dovecot"

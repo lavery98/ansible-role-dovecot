@@ -1,0 +1,16 @@
+galaxy_info:
+  author: lavery98
+  role_name: dovecot
+  description: Install and configure dovecot on your system.
+  license: MIT
+  min_ansible_version: "2.1"
+
+  platforms:
+    - name: Debian
+      versions:
+        - all
+
+  galaxy_tags:
+    - dovecot
+
+dependencies: []
