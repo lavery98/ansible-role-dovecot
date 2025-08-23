@@ -1,0 +1,35 @@
+{{ ansible_managed | comment }}
+
+mail_driver = maildir
+mail_home = /var/vmail/%{user | domain}/%{user | username}
+mail_path = ~/mail
+mailbox_list_utf8 = yes
+
+namespace inbox {
+  inbox = yes
+
+  mailbox Trash {
+    auto = no
+    special_use = \Trash
+  }
+
+  mailbox Drafts {
+    auto = no
+    special_use = \Drafts
+  }
+
+  mailbox Sent {
+    auto = subscribe
+    special_use = \Sent
+  }
+
+  mailbox "Sent Messages" {
+    auto = no
+    special_use = \Sent
+  }
+
+  mailbox Spam {
+    auto = create
+    special_use = \Junk
+  }
+}

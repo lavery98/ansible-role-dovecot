@@ -1,0 +1,19 @@
+---
+- name: Verify Dovecot Role
+  hosts: all
+  tasks:
+    - name: Verify Dovecot binary is available
+      ansible.builtin.command: dovecot --version
+      register: dovecot_version_result
+      changed_when: false
+      failed_when: dovecot_version_result.rc != 0
+
+    - name: Check if ports are open
+      ansible.builtin.wait_for:
+        port: "{{ item }}"
+        timeout: 5
+      loop:
+        - "110"
+        - "143"
+        # - "993"
+        # - "995"

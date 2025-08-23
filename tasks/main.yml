@@ -1,24 +1,38 @@
 ---
 # tasks file for dovecot
 
-- name: Ensure dependencies are installed.
-  ansible.builtin.apt:
-    name:
-      - apt-transport-https
-      - ca-certificates
-      - python3-debian
-    state: present
+- include_tasks: setup-Debian.yml
+  when: ansible_os_family == "Debian"
 
-- name: Add Dovecot repository
-  ansible.builtin.deb822_repository:
-    name: dovecot
-    types: deb
-    uris: "{{ dovecot_repo_url }}/{{ dovecot_apt_release }}/{{ ansible_distribution | lower }}/{{ ansible_distribution_release | lower }}"
-    suites: "{{ ansible_distribution_release }}"
-    signed_by: "{{ dovecot_apt_gpg_key }}"
-    components: "{{ dovecot_apt_release_channel }}"
+- name: Install Dovecot packages
+  ansible.builtin.package:
+    name: "{{ dovecot_packages }}"
     state: present
-  notify: apt update
+  ignore_errors: "{{ ansible_check_mode }}"
 
-- name: Flush handlers
-  ansible.builtin.meta: flush_handlers
+- name: Configure Dovecot (10-auth.conf)
+  ansible.builtin.template:
+    src: "10-auth.conf.j2"
+    dest: "/etc/dovecot/conf.d/10-auth.conf"
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart Dovecot
+
+- name: Configure Dovecot (10-mail.conf)
+  ansible.builtin.template:
+    src: "10-mail.conf.j2"
+    dest: "/etc/dovecot/conf.d/10-mail.conf"
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart Dovecot
+
+- name: Configure Dovecot (10-ssl.conf)
+  ansible.builtin.template:
+    src: "10-ssl.conf.j2"
+    dest: "/etc/dovecot/conf.d/10-ssl.conf"
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart Dovecot

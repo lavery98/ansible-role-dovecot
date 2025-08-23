@@ -1,0 +1,23 @@
+{{ ansible_managed | comment }}
+
+sql_driver = mysql
+
+passdb sql {
+  default_password_scheme = SHA512-CRYPT
+
+  query = SELECT username AS user, password \
+    FROM mailbox \
+    WHERE username = '%{user}' AND active = '1'
+}
+
+userdb sql {
+  fields {
+    uid = vmail
+    gid = vmail
+  }
+  query = SELECT CONCAT('/var/vmail', maildir) AS home \
+    FROM mailbox \
+    WHERE username = '%{user}' AND active = '1'
+  # For using doveadm -A:
+  iterate_query = SELECT username FROM mailbox
+}
