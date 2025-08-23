@@ -3,6 +3,9 @@
   hosts: all
   gather_facts: true
 
+  vars:
+    dovecot_mysql_password: some_password
+
   pre_tasks:
     - name: Update apt cache.
       ansible.builtin.apt:

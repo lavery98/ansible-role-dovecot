@@ -2,6 +2,12 @@
 
 sql_driver = mysql
 
+mysql {{ dovecot_mysql_host }} {
+  user = {{ dovecot_mysql_user }}
+  password = {{ dovecot_mysql_password }}
+  dbname = {{ dovecot_mysql_database }}
+}
+
 passdb sql {
   default_password_scheme = SHA512-CRYPT
 
@@ -11,10 +17,6 @@ passdb sql {
 }
 
 userdb sql {
-  fields {
-    uid = vmail
-    gid = vmail
-  }
   query = SELECT CONCAT('/var/vmail', maildir) AS home \
     FROM mailbox \
     WHERE username = '%{user}' AND active = '1'

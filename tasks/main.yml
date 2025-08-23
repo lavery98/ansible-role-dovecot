@@ -1,7 +1,8 @@
 ---
 # tasks file for dovecot
 
-- include_tasks: setup-Debian.yml
+- name: Include Debian setup tasks
+  include_tasks: setup-Debian.yml
   when: ansible_os_family == "Debian"
 
 - name: Install Dovecot packages
