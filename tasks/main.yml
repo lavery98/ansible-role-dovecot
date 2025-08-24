@@ -95,3 +95,19 @@
     group: root
     mode: '0644'
   notify: Restart Dovecot
+
+- name: Create sieve directory
+  ansible.builtin.file:
+    path: /var/lib/dovecot/sieve/before
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Create spam sieve script
+  ansible.builtin.template:
+    src: "spam.sieve.j2"
+    dest: "/var/lib/dovecot/sieve/before/spam.sieve"
+    owner: root
+    group: root
+    mode: '0644'
