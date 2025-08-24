@@ -11,7 +11,12 @@
       ansible.builtin.apt:
         update_cache: true
         cache_valid_time: 600
-      when: ansible_distribution == "Debian"
+      when: ansible_os_family == "Debian"
+
+    - name: Install postfix
+      ansible.builtin.package:
+        name: postfix
+        state: present
 
   roles:
     - role: lavery98.dovecot

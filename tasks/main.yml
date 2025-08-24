@@ -2,7 +2,7 @@
 # tasks file for dovecot
 
 - name: Include Debian setup tasks
-  include_tasks: setup-Debian.yml
+  ansible.builtin.include_tasks: setup-Debian.yml
   when: ansible_os_family == "Debian"
 
 - name: Install Dovecot packages
@@ -10,6 +10,19 @@
     name: "{{ dovecot_packages }}"
     state: present
   ignore_errors: "{{ ansible_check_mode }}"
+
+- name: Create vmail group
+  ansible.builtin.group:
+    name: vmail
+    gid: 5000
+
+- name: Create vmail user
+  ansible.builtin.user:
+    name: vmail
+    group: vmail
+    uid: 5000
+    home: /var/vmail
+    shell: /usr/sbin/nologin
 
 - name: Configure Dovecot (10-auth.conf)
   ansible.builtin.template:
@@ -33,6 +46,33 @@
   ansible.builtin.template:
     src: "10-ssl.conf.j2"
     dest: "/etc/dovecot/conf.d/10-ssl.conf"
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart Dovecot
+
+- name: Configure Dovecot (20-imap.conf)
+  ansible.builtin.template:
+    src: "20-imap.conf.j2"
+    dest: "/etc/dovecot/conf.d/20-imap.conf"
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart Dovecot
+
+- name: Configure Dovecot (20-lmtp.conf)
+  ansible.builtin.template:
+    src: "20-lmtp.conf.j2"
+    dest: "/etc/dovecot/conf.d/20-lmtp.conf"
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart Dovecot
+
+- name: Configure Dovecot (20-pop3.conf)
+  ansible.builtin.template:
+    src: "20-pop3.conf.j2"
+    dest: "/etc/dovecot/conf.d/20-pop3.conf"
     owner: root
     group: root
     mode: '0644'

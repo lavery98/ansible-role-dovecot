@@ -23,3 +23,12 @@ userdb sql {
   # For using doveadm -A:
   iterate_query = SELECT username FROM mailbox
 }
+
+# https://doc.dovecot.org/main/howto/sasl/postfix.html
+service auth {
+  unix_listener /var/spool/postfix/private/auth {
+    group = postfix
+    mode = 0600
+    user = postfix
+  }
+}

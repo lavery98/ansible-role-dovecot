@@ -3,3 +3,12 @@
 protocols {
   lmtp = yes
 }
+
+# https://doc.dovecot.org/main/howto/lmtp/postfix.html
+service lmtp {
+  unix_listener /var/spool/postfix/private/dovecot-lmtp {
+    group = postfix
+    mode = 0600
+    user = postfix
+  }
+}
