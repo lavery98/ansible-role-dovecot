@@ -42,6 +42,15 @@
     mode: '0644'
   notify: Restart Dovecot
 
+- name: Configure Dovecot (10-sieve.conf)
+  ansible.builtin.template:
+    src: "10-sieve.conf.j2"
+    dest: "/etc/dovecot/conf.d/10-sieve.conf"
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart Dovecot
+
 - name: Configure Dovecot (10-ssl.conf)
   ansible.builtin.template:
     src: "10-ssl.conf.j2"
@@ -64,6 +73,15 @@
   ansible.builtin.template:
     src: "20-lmtp.conf.j2"
     dest: "/etc/dovecot/conf.d/20-lmtp.conf"
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart Dovecot
+
+- name: Configure Dovecot (20-managesieve.conf)
+  ansible.builtin.template:
+    src: "20-managesieve.conf.j2"
+    dest: "/etc/dovecot/conf.d/20-managesieve.conf"
     owner: root
     group: root
     mode: '0644'

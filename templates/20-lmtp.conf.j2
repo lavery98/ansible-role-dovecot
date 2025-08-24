@@ -12,3 +12,9 @@ service lmtp {
     user = postfix
   }
 }
+
+protocol lmtp {
+  mail_plugins {
+    sieve = yes
+  }
+}

@@ -1,10 +1,15 @@
 ---
 # defaults file for dovecot
 
+# Database
 dovecot_mysql_host: localhost
 dovecot_mysql_user: dovecot
 dovecot_mysql_database: mail
 
+# SSL
+dovecot_ssl: false
+
+# APT repository
 dovecot_repo_url: https://repo.dovecot.org
 dovecot_apt_release_channel: main
 dovecot_apt_release: "ce-2.4-latest"

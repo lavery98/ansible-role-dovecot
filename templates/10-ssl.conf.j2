@@ -1,8 +1,10 @@
 {{ ansible_managed | comment }}
 
-ssl = no
+ssl = {{ 'yes' if dovecot_ssl else 'no' }}
 
-# ssl_server {
-#    cert_file = /etc/ssl/certs/ssl-cert-snakeoil.pem
-#    key_file = /etc/ssl/private/ssl-cert-snakeoil.key
-# }
+{% if dovecot_ssl %}
+ssl_server {
+  cert_file = {{ dovecot_ssl_cert }}
+  key_file = {{ dovecot_ssl_key }}
+}
+{% endif %}
